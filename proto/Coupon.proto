@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package Coupon;
+
+option go_package = "./proto;Coupon";
+
+service CouponService {
+	rpc GetCouponByCode(GetCouponByCodeRequest) returns (GetCouponByCodeResponse) {}
+	rpc GetCouponById(GetCouponByIdRequest) returns (GetCouponByIdResponse) {}
+	rpc UseCoupon(UseCouponRequest) returns (UseCouponResponse) {}
+	rpc CreateCoupon(CreateCouponRequest) returns (CreateCouponResponse) {}
+}
+
+message Coupon {
+	string coupon_id = 1;
+	string code = 2;
+	double amount = 3;
+	bool already_used = 4;
+	string expire_at = 5;
+}
+
+message GetCouponByCodeRequest {
+	string coupon_code = 1;
+}
+
+message GetCouponByCodeResponse {
+	Coupon coupon = 1;
+}
+
+message GetCouponByIdRequest {
+	string coupon_id = 1;
+}
+
+message GetCouponByIdResponse {
+	Coupon coupon = 1;
+}
+
+message UseCouponRequest {
+	string coupon_id = 1;
+}
+
+message UseCouponResponse {
+	string msg = 1;
+}
+
+message CreateCouponRequest {
+	reserved 1;
+	reserved "coupon_id";
+	string code = 2;
+	double amount = 3;
+	bool already_used = 4;
+}
+
+message CreateCouponResponse {
+	Coupon coupon = 1;
+}
