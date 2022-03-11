@@ -10,11 +10,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 	log "go-micro.dev/v4/logger"
+	"time"
 )
 
 type ICouponRepository interface {
 	GetCouponByCode(ctx context.Context, couponCode string) (*ent.Coupon, error)
-	UseCoupon(ctx context.Context, couponId uuid.UUID) (string, error)
+	UseCoupon(ctx context.Context, couponCode string) (int32, error)
 	GetCouponById(ctx context.Context, couponId uuid.UUID) (*ent.Coupon, error)
 	CreateCoupon(ctx context.Context, coupon *ent.Coupon) (*ent.Coupon, error)
 }
@@ -31,12 +32,19 @@ func (c *CouponRepository) GetCouponByCode(ctx context.Context, couponCode strin
 	return couponFromRepo, nil
 }
 
-func (c *CouponRepository) UseCoupon(ctx context.Context, couponId uuid.UUID) (string, error) {
-	err := c.couponClient.Coupon.UpdateOneID(couponId).SetAlreadyUsed(true).Exec(ctx)
+func (c *CouponRepository) UseCoupon(ctx context.Context, couponCode string) (int32, error) {
+	couponFromRepo, err := c.GetCouponByCode(ctx, couponCode)
 	if err != nil {
-		return "", fmt.Errorf("failed updating coupon: %w", err)
+		return 0, err
 	}
-	return "coupon used", nil
+	if couponFromRepo.AlreadyUsed || couponFromRepo.ExpireAt < time.Now().Unix() {
+		return 0, fmt.Errorf("coupon already used or expired")
+	}
+	err = c.couponClient.Coupon.Update().Where(coupon.Code(couponCode)).SetAlreadyUsed(true).Exec(ctx)
+	if err != nil {
+		return -1, fmt.Errorf("failed updating coupon: %w", err)
+	}
+	return 1, nil
 }
 
 func (c *CouponRepository) GetCouponById(ctx context.Context, couponId uuid.UUID) (*ent.Coupon, error) {

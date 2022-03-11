@@ -36,11 +36,13 @@ message GetCouponByIdResponse {
 }
 
 message UseCouponRequest {
-	string coupon_id = 1;
+	string coupon_code = 1;
 }
 
 message UseCouponResponse {
-	string msg = 1;
+	reserved 1;
+	reserved "msg";
+	int32 used = 2;
 }
 
 message CreateCouponRequest {

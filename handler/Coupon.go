@@ -68,15 +68,11 @@ func (e *Coupon) GetCouponById(ctx context.Context, request *pb.GetCouponByIdReq
 
 func (e *Coupon) UseCoupon(ctx context.Context, request *pb.UseCouponRequest, response *pb.UseCouponResponse) error {
 	log.Infof("Received Coupon.UseCoupon request: %v", request)
-	couponId, err := uuid.Parse(request.CouponId)
-	if err != nil {
-		return fmt.Errorf("failed parsing id: %w", err)
-	}
-	couponStatus, err := e.couponRepository.UseCoupon(ctx, couponId)
+	couponStatus, err := e.couponRepository.UseCoupon(ctx, request.CouponCode)
 	if err != nil {
 		return err
 	}
-	response.Msg = couponStatus
+	response.Used = couponStatus
 	return nil
 }
 
