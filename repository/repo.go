@@ -59,7 +59,6 @@ func (c *CouponRepository) CreateCoupon(ctx context.Context, coupon *ent.Coupon)
 
 func CouponRepositoryProvider(h *external.Host) (*CouponRepository, error) {
 	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", h.User, h.Password, h.Address, h.Port, h.Name)
-	//client, err := ent.Open(h.Type, "root:root@tcp(localhost:3306)/EventCatalogDB?parseTime=true")
 	client, err := ent.Open(h.Type, connString)
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)

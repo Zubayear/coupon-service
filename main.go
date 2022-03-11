@@ -23,10 +23,12 @@ func main() {
 	)
 	srv.Init()
 
+	// wire up all the dependency
 	coupon, err := di.DependencyProvider()
 	if err != nil {
 		return
 	}
+
 	// Register handler
 	err = pb.RegisterCouponServiceHandler(srv.Server(), coupon)
 	if err != nil {

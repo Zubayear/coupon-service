@@ -51,6 +51,7 @@ func (e *Coupon) GetCouponByCode(ctx context.Context, request *pb.GetCouponByCod
 }
 
 func (e *Coupon) GetCouponById(ctx context.Context, request *pb.GetCouponByIdRequest, response *pb.GetCouponByIdResponse) error {
+	log.Infof("Received Coupon.GetCouponById request: %v", request)
 	couponId, err := uuid.Parse(request.CouponId)
 	if err != nil {
 		return fmt.Errorf("failed parsing id: %w", err)
@@ -66,6 +67,7 @@ func (e *Coupon) GetCouponById(ctx context.Context, request *pb.GetCouponByIdReq
 }
 
 func (e *Coupon) UseCoupon(ctx context.Context, request *pb.UseCouponRequest, response *pb.UseCouponResponse) error {
+	log.Infof("Received Coupon.UseCoupon request: %v", request)
 	couponId, err := uuid.Parse(request.CouponId)
 	if err != nil {
 		return fmt.Errorf("failed parsing id: %w", err)
