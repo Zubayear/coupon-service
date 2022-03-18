@@ -18,6 +18,12 @@ var (
 	port    = flag.Int("port", 60009, "coupon address")
 )
 
+var couponClient Coupon.CouponService
+
+func init() {
+	couponClient = Coupon.NewCouponService("coupon", client.DefaultClient)
+}
+
 func run() error {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -72,7 +78,6 @@ type Proxy struct {
 }
 
 func (p *Proxy) GetCouponByCode(ctx context.Context, request *Coupon.GetCouponByCodeRequest) (*Coupon.GetCouponByCodeResponse, error) {
-	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
 	couponToReturn, err := couponClient.GetCouponByCode(ctx, request)
 	if err != nil {
 		return nil, err
@@ -81,7 +86,6 @@ func (p *Proxy) GetCouponByCode(ctx context.Context, request *Coupon.GetCouponBy
 }
 
 func (p *Proxy) GetCouponById(ctx context.Context, request *Coupon.GetCouponByIdRequest) (*Coupon.GetCouponByIdResponse, error) {
-	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
 	couponToReturn, err := couponClient.GetCouponById(ctx, request)
 	if err != nil {
 		return nil, err
@@ -90,7 +94,6 @@ func (p *Proxy) GetCouponById(ctx context.Context, request *Coupon.GetCouponById
 }
 
 func (p *Proxy) UseCoupon(ctx context.Context, request *Coupon.UseCouponRequest) (*Coupon.UseCouponResponse, error) {
-	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
 	couponToReturn, err := couponClient.UseCoupon(ctx, request)
 	if err != nil {
 		return nil, err
@@ -99,7 +102,6 @@ func (p *Proxy) UseCoupon(ctx context.Context, request *Coupon.UseCouponRequest)
 }
 
 func (p *Proxy) CreateCoupon(ctx context.Context, request *Coupon.CreateCouponRequest) (*Coupon.CreateCouponResponse, error) {
-	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
 	couponToReturn, err := couponClient.CreateCoupon(ctx, request)
 	if err != nil {
 		return nil, err
