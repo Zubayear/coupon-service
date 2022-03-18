@@ -1,0 +1,240 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Coupon.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CouponService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/coupons": {
+      "post": {
+        "operationId": "CouponService_CreateCoupon",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CouponCreateCouponResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CouponCreateCouponRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CouponService"
+        ]
+      }
+    },
+    "/api/coupons/couponCode": {
+      "get": {
+        "operationId": "CouponService_GetCouponByCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CouponGetCouponByCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "couponCode",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CouponService"
+        ]
+      }
+    },
+    "/api/coupons/couponId": {
+      "get": {
+        "operationId": "CouponService_GetCouponById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CouponGetCouponByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "couponId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CouponService"
+        ]
+      }
+    },
+    "/api/coupons/{couponCode}": {
+      "post": {
+        "operationId": "CouponService_UseCoupon",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CouponUseCouponResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "couponCode",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CouponService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CouponCoupon": {
+      "type": "object",
+      "properties": {
+        "couponId": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "alreadyUsed": {
+          "type": "boolean"
+        },
+        "expireAt": {
+          "type": "string"
+        }
+      }
+    },
+    "CouponCreateCouponRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "alreadyUsed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CouponCreateCouponResponse": {
+      "type": "object",
+      "properties": {
+        "coupon": {
+          "$ref": "#/definitions/CouponCoupon"
+        }
+      }
+    },
+    "CouponGetCouponByCodeResponse": {
+      "type": "object",
+      "properties": {
+        "coupon": {
+          "$ref": "#/definitions/CouponCoupon"
+        }
+      }
+    },
+    "CouponGetCouponByIdResponse": {
+      "type": "object",
+      "properties": {
+        "coupon": {
+          "$ref": "#/definitions/CouponCoupon"
+        }
+      }
+    },
+    "CouponUseCouponResponse": {
+      "type": "object",
+      "properties": {
+        "used": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

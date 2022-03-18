@@ -4,11 +4,30 @@ package Coupon;
 
 option go_package = "./proto;Coupon";
 
+import "google/api/annotations.proto";
+
 service CouponService {
-	rpc GetCouponByCode(GetCouponByCodeRequest) returns (GetCouponByCodeResponse) {}
-	rpc GetCouponById(GetCouponByIdRequest) returns (GetCouponByIdResponse) {}
-	rpc UseCoupon(UseCouponRequest) returns (UseCouponResponse) {}
-	rpc CreateCoupon(CreateCouponRequest) returns (CreateCouponResponse) {}
+	rpc GetCouponByCode(GetCouponByCodeRequest) returns (GetCouponByCodeResponse) {
+		option (google.api.http) = {
+			get: "/api/coupons/couponCode"
+		};
+	}
+	rpc GetCouponById(GetCouponByIdRequest) returns (GetCouponByIdResponse) {
+		option (google.api.http) = {
+			get: "/api/coupons/couponId"
+		};
+	}
+	rpc UseCoupon(UseCouponRequest) returns (UseCouponResponse) {
+		option (google.api.http) = {
+			post: "/api/coupons/{coupon_code}"
+		};
+	}
+	rpc CreateCoupon(CreateCouponRequest) returns (CreateCouponResponse) {
+		option (google.api.http) = {
+			post: "/api/coupons"
+			body: "*"
+		};
+	}
 }
 
 message Coupon {
@@ -20,7 +39,7 @@ message Coupon {
 }
 
 message GetCouponByCodeRequest {
-	string coupon_code = 1;
+	string couponCode = 1;
 }
 
 message GetCouponByCodeResponse {
@@ -28,7 +47,7 @@ message GetCouponByCodeResponse {
 }
 
 message GetCouponByIdRequest {
-	string coupon_id = 1;
+	string couponId = 1;
 }
 
 message GetCouponByIdResponse {
