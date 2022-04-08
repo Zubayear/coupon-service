@@ -34,9 +34,10 @@ docker:
 grpc-gateway:
 	@protoc --proto_path=./proto --micro_out=. --grpc-gateway_out=logtostderr=true,register_func_suffix=UT:. --openapiv2_out=./proto --openapiv2_opt=logtostderr=true --openapiv2_opt=use_go_templates=true --go_out=plugins=grpc:. ./proto/Coupon.proto
 
-.PHONY: run-service
-run-service:
-	@go run main.go --server_address=localhost:60009
+.PHONY: run_service
+DEFAULT_PORT=60009
+run_service:
+	@go run main.go --server_address=localhost:$(DEFAULT_PORT)
 
 .PHONY: run-gateway
 run-gateway:
